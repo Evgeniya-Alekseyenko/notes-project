@@ -10,6 +10,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    DialogContentText,
+} from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -52,7 +60,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function SearchBox({ notes, onAddNote, onDeleteNote }) {
+export default function SearchBox({ activeNote, onAddNote, onDeleteNote }) {
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+    const handleDeleteNote = () => {
+        setOpenDialog(true);
+    };
+    const handleConfirmDelete = () => {
+        onDeleteNote && onDeleteNote(activeNote);
+        setOpenDialog(false);
+    };
+    const handleCancelDelete = () => {
+        setOpenDialog(false);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position='static' sx={{ background: '#3CB371' }}>
@@ -73,7 +98,8 @@ export default function SearchBox({ notes, onAddNote, onDeleteNote }) {
                         color='inherit'
                         aria-label='open drawer'
                         sx={{ mr: 2 }}
-                        onClick={() => onDeleteNote(notes.id)}
+                        onClick={() => onDeleteNote(activeNote)}
+                        onMouseDown={handleDeleteNote}
                     >
                         <DeleteOutlineOutlinedIcon />
                     </IconButton>
@@ -109,6 +135,18 @@ export default function SearchBox({ notes, onAddNote, onDeleteNote }) {
                     </Search>
                 </Toolbar>
             </AppBar>
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this note?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancelDelete}>Cancel</Button>
+                    <Button onClick={handleConfirmDelete}>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
