@@ -60,8 +60,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function SearchBox({ activeNote, onAddNote, onDeleteNote }) {
+export default function SearchBox({
+    activeNote,
+    onAddNote,
+    onDeleteNote,
+    onEditNote,
+}) {
     const [openDialog, setOpenDialog] = React.useState(false);
+
+    const [isEditing, setIsEditing] = React.useState(false);
+
+    const handleEditNote = () => {
+        setIsEditing(!isEditing);
+        onEditNote && onEditNote();
+    };
 
     const handleDeleteNote = () => {
         setOpenDialog(true);
@@ -100,6 +112,7 @@ export default function SearchBox({ activeNote, onAddNote, onDeleteNote }) {
                         sx={{ mr: 2 }}
                         onClick={() => onDeleteNote(activeNote)}
                         onMouseDown={handleDeleteNote}
+                        disabled={!activeNote}
                     >
                         <DeleteOutlineOutlinedIcon />
                     </IconButton>
@@ -109,6 +122,8 @@ export default function SearchBox({ activeNote, onAddNote, onDeleteNote }) {
                         color='inherit'
                         aria-label='open drawer'
                         sx={{ mr: 2 }}
+                        onClick={handleEditNote}
+                        disabled={!activeNote}
                     >
                         <EditNoteOutlinedIcon />
                     </IconButton>
