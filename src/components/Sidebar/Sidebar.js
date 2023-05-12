@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
 
 export default function Sidebar({ notes, activeNote, setActiveNote }) {
@@ -26,21 +24,28 @@ export default function Sidebar({ notes, activeNote, setActiveNote }) {
                                 flexDirection: 'column',
                                 justifyContent: 'flex-start',
                                 alignItems: 'flex-start',
+                                paddingLeft: '6px',
                             }}
                         >
-                            <ListItemButton>
-                                <ListItemText primary={note.title} />
-                            </ListItemButton>
+                            <Typography
+                                fontSize='20px'
+                                color='text.secondary'
+                                fontWeight='bold'
+                            >
+                                {note.title ? note.title : 'Untitled'}
+                            </Typography>
                             <div>
-                                <p>
+                                <Typography
+                                    fontSize='16px'
+                                    color='text.secondary'
+                                >
                                     {note.body &&
-                                        note.body.substr(0, 100) + '...'}
-                                </p>
+                                        note.body.substr(0, 20) + '...'}
+                                </Typography>
                                 <Typography
                                     fontSize='12px'
                                     color='text.secondary'
                                     fontWeight='bold'
-                                    sx={{ paddingLeft: '6px' }}
                                 >
                                     Last modified{' '}
                                     {new Date(
