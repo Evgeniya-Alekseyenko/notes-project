@@ -10,6 +10,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import Tooltip from '@mui/material/Tooltip';
+
 import {
     Dialog,
     DialogTitle,
@@ -116,17 +119,25 @@ export default function SearchBox({
                     >
                         <DeleteOutlineOutlinedIcon />
                     </IconButton>
-                    <IconButton
-                        size='large'
-                        edge='start'
-                        color='inherit'
-                        aria-label='open drawer'
-                        sx={{ mr: 2 }}
-                        onClick={handleEditNote}
-                        disabled={!activeNote}
-                    >
-                        <EditNoteOutlinedIcon />
-                    </IconButton>
+                    <Tooltip title={isEditing ? 'Save Changes' : 'Edit Note'}>
+                        <span>
+                            <IconButton
+                                size='large'
+                                edge='start'
+                                color='inherit'
+                                aria-label='open drawer'
+                                sx={{ mr: 2 }}
+                                onClick={handleEditNote}
+                                disabled={!activeNote}
+                            >
+                                {isEditing ? (
+                                    <SaveIcon />
+                                ) : (
+                                    <EditNoteOutlinedIcon />
+                                )}
+                            </IconButton>
+                        </span>
+                    </Tooltip>
                     <Typography
                         variant='h6'
                         noWrap
