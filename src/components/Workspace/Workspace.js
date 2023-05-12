@@ -25,6 +25,21 @@ export default function Workspace() {
     const handleEditNote = () => {
         setIsEditing(!isEditing);
     };
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const sortedNotes = notes
+        .slice()
+        .sort((a, b) => b.lastModified - a.lastModified)
+        .filter(
+            (note) =>
+                note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                note.body.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+    const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+        setActiveNote(false);
+    };
 
     useEffect(() => {
         const request = indexedDB.open('notes_db', 1);
@@ -131,6 +146,9 @@ export default function Workspace() {
                     onDeleteNote={onDeleteNote}
                     isEditing={isEditing}
                     onEditNote={handleEditNote}
+                    handleSearch={handleSearch}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
                 />
             </AppBar>
             <Drawer
@@ -153,6 +171,8 @@ export default function Workspace() {
                             activeNote={activeNote}
                             setActiveNote={setActiveNote}
                             setIsEditing={setIsEditing}
+                            sortedNotes={sortedNotes}
+                            searchQuery={searchQuery}
                         />
                     </List>
                     <Divider />

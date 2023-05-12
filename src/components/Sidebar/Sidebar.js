@@ -10,11 +10,8 @@ export default function Sidebar({
     activeNote,
     setActiveNote,
     setIsEditing,
+    sortedNotes,
 }) {
-    const sortedNotes = notes
-        .slice()
-        .sort((a, b) => b.lastModified - a.lastModified);
-
     const onclickNote = (id) => {
         if (activeNote !== id) {
             setIsEditing(false);

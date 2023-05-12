@@ -12,6 +12,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import Tooltip from '@mui/material/Tooltip';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import {
     Dialog,
@@ -69,6 +70,9 @@ export default function SearchBox({
     onDeleteNote,
     onEditNote,
     isEditing,
+    handleSearch,
+    searchQuery,
+    setSearchQuery,
 }) {
     const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -85,6 +89,10 @@ export default function SearchBox({
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+    };
+
+    const onClickClear = () => {
+        setSearchQuery('');
     };
 
     return (
@@ -151,7 +159,14 @@ export default function SearchBox({
                         <StyledInputBase
                             placeholder='Search…'
                             inputProps={{ 'aria-label': 'search' }}
+                            onChange={handleSearch}
+                            value={searchQuery}
                         />
+                        {searchQuery && (
+                            <IconButton onClick={onClickClear}>
+                                <HighlightOffIcon sx={{ color: 'white' }} />
+                            </IconButton>
+                        )}
                     </Search>
                 </Toolbar>
             </AppBar>
