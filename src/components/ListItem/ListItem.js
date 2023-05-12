@@ -1,5 +1,6 @@
 import { Box, TextField, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 
 export default function ListItem({
     activeNote,
@@ -40,6 +41,30 @@ export default function ListItem({
                     </ReactMarkdown>
                 </>
             )}
+            {!isEditing &&
+                activeNote.title === '' &&
+                activeNote.body === '' && (
+                    <Typography
+                        variant='h3'
+                        align='center'
+                        fontWeight='bold'
+                        color='#3CB371'
+                        sx={{ marginTop: '100px' }}
+                    >
+                        <div>You haven't written anything yet.</div>
+                        <div>
+                            Please click the edit note button
+                            <EditNoteOutlinedIcon
+                                sx={{
+                                    fontSize: '32px',
+                                    color: '#3CB371',
+                                    margin: '0 20px',
+                                }}
+                            />
+                            on the taskbar
+                        </div>
+                    </Typography>
+                )}
             {isEditing && (
                 <>
                     <Box
@@ -64,7 +89,7 @@ export default function ListItem({
                             }
                             variant='outlined'
                             color='success'
-                            sx={{ width: '30vw', marginTop: '20px' }}
+                            sx={{ width: '40vw', marginTop: '20px' }}
                         />
                     </Box>
                     <Box
@@ -80,7 +105,7 @@ export default function ListItem({
                     >
                         <TextField
                             multiline
-                            rows={5}
+                            rows={24}
                             id='body'
                             placeholder='Write your note...'
                             value={activeNote.body}
@@ -89,7 +114,10 @@ export default function ListItem({
                             }
                             variant='outlined'
                             color='success'
-                            sx={{ width: '30vw', marginTop: '20px' }}
+                            sx={{
+                                width: '70vw',
+                                marginTop: '20px',
+                            }}
                         />
                     </Box>
                 </>

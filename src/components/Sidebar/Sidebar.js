@@ -5,20 +5,32 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Typography } from '@mui/material';
 
-export default function Sidebar({ notes, activeNote, setActiveNote }) {
+export default function Sidebar({
+    notes,
+    activeNote,
+    setActiveNote,
+    setIsEditing,
+}) {
     const sortedNotes = notes
         .slice()
         .sort((a, b) => b.lastModified - a.lastModified);
 
+    const onclickNote = (id) => {
+        if (activeNote !== id) {
+            setIsEditing(false);
+        }
+        setActiveNote(id);
+    };
+
     return (
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: 'auto', cursor: 'pointer' }}>
             <List>
                 {sortedNotes.map((note, index) => (
                     <React.Fragment key={index}>
                         <ListItem
                             disablePadding
                             className={`${note.id === activeNote && 'active'}`}
-                            onClick={() => setActiveNote(note.id)}
+                            onClick={() => onclickNote(note.id)}
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',

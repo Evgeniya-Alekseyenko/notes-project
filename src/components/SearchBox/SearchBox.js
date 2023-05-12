@@ -68,15 +68,9 @@ export default function SearchBox({
     onAddNote,
     onDeleteNote,
     onEditNote,
+    isEditing,
 }) {
     const [openDialog, setOpenDialog] = React.useState(false);
-
-    const [isEditing, setIsEditing] = React.useState(false);
-
-    const handleEditNote = () => {
-        setIsEditing(!isEditing);
-        onEditNote && onEditNote();
-    };
 
     const handleDeleteNote = () => {
         setOpenDialog(true);
@@ -127,7 +121,7 @@ export default function SearchBox({
                                 color='inherit'
                                 aria-label='open drawer'
                                 sx={{ mr: 2 }}
-                                onClick={handleEditNote}
+                                onClick={onEditNote}
                                 disabled={!activeNote}
                             >
                                 {isEditing ? (

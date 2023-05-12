@@ -24,7 +24,6 @@ export default function Workspace() {
 
     const handleEditNote = () => {
         setIsEditing(!isEditing);
-        console.log('edit');
     };
 
     useEffect(() => {
@@ -81,6 +80,7 @@ export default function Workspace() {
             body: '',
             lastModified: Date.now(),
         };
+        setIsEditing(true);
         setNotes([newNote, ...notes]);
         setActiveNote(newNote.id);
         saveNote(newNote);
@@ -94,6 +94,7 @@ export default function Workspace() {
         request.onsuccess = () => {
             console.log('Note deleted successfully');
             setNotes(notes.filter(({ id }) => id !== noteId));
+            setActiveNote(false);
         };
 
         request.onerror = () => {
@@ -128,6 +129,7 @@ export default function Workspace() {
                     activeNote={activeNote}
                     onAddNote={onAddNote}
                     onDeleteNote={onDeleteNote}
+                    isEditing={isEditing}
                     onEditNote={handleEditNote}
                 />
             </AppBar>
@@ -150,6 +152,7 @@ export default function Workspace() {
                             onDeleteNote={onDeleteNote}
                             activeNote={activeNote}
                             setActiveNote={setActiveNote}
+                            setIsEditing={setIsEditing}
                         />
                     </List>
                     <Divider />
