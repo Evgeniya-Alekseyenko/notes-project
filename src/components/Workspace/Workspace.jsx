@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { NotesContext } from '../context/context';
 import SearchBox from '../SearchBox/SearchBox';
 import Sidebar from '../Sidebar/Sidebar';
 import ListItem from '../ListItem/ListItem';
@@ -16,30 +17,10 @@ import Divider from '@mui/material/Divider';
 const drawerWidth = 240;
 
 export default function Workspace() {
-    const [notes, setNotes] = useState([]);
-    const [activeNote, setActiveNote] = useState(false);
+    const { notes, setNotes, setActiveNote, setIsEditing } =
+        useContext(NotesContext);
+
     const [db, setDb] = useState(null);
-
-    const [isEditing, setIsEditing] = React.useState();
-
-    const handleEditNote = () => {
-        setIsEditing(!isEditing);
-    };
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const sortedNotes = notes
-        .slice()
-        .sort((a, b) => b.lastModified - a.lastModified)
-        .filter(
-            (note) =>
-                note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                note.body.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
-    const handleSearch = (event) => {
-        setSearchQuery(event.target.value);
-        setActiveNote(false);
-    };
 
     useEffect(() => {
         const request = indexedDB.open('notes_db', 1);
@@ -72,6 +53,7 @@ export default function Workspace() {
 
             console.log('Database upgrade complete');
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const saveNote = (note) => {
@@ -117,22 +99,6 @@ export default function Workspace() {
         };
     };
 
-    const onUpdateNote = (updatedNote) => {
-        const updatedNotesArr = notes.map((note) => {
-            if (note.id === updatedNote.id) {
-                return updatedNote;
-            }
-
-            return note;
-        });
-
-        setNotes(updatedNotesArr);
-    };
-
-    const getActiveNote = () => {
-        return notes.find(({ id }) => id === activeNote);
-    };
-
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -140,16 +106,7 @@ export default function Workspace() {
                 position='fixed'
                 sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             >
-                <SearchBox
-                    activeNote={activeNote}
-                    onAddNote={onAddNote}
-                    onDeleteNote={onDeleteNote}
-                    isEditing={isEditing}
-                    onEditNote={handleEditNote}
-                    handleSearch={handleSearch}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                />
+                <SearchBox onAddNote={onAddNote} onDeleteNote={onDeleteNote} />
             </AppBar>
             <Drawer
                 variant='permanent'
@@ -165,28 +122,14 @@ export default function Workspace() {
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
-                        <Sidebar
-                            notes={notes}
-                            onDeleteNote={onDeleteNote}
-                            activeNote={activeNote}
-                            setActiveNote={setActiveNote}
-                            setIsEditing={setIsEditing}
-                            sortedNotes={sortedNotes}
-                            searchQuery={searchQuery}
-                        />
+                        <Sidebar />
                     </List>
                     <Divider />
                 </Box>
             </Drawer>
             <Box component='main' sx={{ flexGrow: 2, p: 3 }}>
                 <Toolbar />
-                <ListItem
-                    activeNote={getActiveNote()}
-                    onUpdateNote={onUpdateNote}
-                    saveNote={saveNote}
-                    isEditing={isEditing}
-                    onEditNote={handleEditNote}
-                />
+                <ListItem saveNote={saveNote} />
             </Box>
         </Box>
     );

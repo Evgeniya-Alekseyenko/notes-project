@@ -1,13 +1,16 @@
+import React, { useContext } from 'react';
+
+import { NotesContext } from '../context/context';
+
 import { Box, TextField, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 
-export default function ListItem({
-    activeNote,
-    onUpdateNote,
-    saveNote,
-    isEditing,
-}) {
+export default function ListItem({ saveNote }) {
+    const { isEditing, onUpdateNote, getActiveNote } = useContext(NotesContext);
+
+    const activeNote = getActiveNote();
+
     const onEditField = (field, value) => {
         const updatedNote = {
             ...activeNote,

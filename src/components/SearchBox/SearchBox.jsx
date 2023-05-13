@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
+
+import { NotesContext } from '../context/context';
+
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -64,25 +67,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function SearchBox({
-    activeNote,
-    onAddNote,
-    onDeleteNote,
-    onEditNote,
-    isEditing,
-    handleSearch,
-    searchQuery,
-    setSearchQuery,
-}) {
-    const [openDialog, setOpenDialog] = React.useState(false);
+export default function SearchBox({ onAddNote, onDeleteNote }) {
+    const {
+        activeNote,
+        onEditNote,
+        isEditing,
+        searchQuery,
+        setSearchQuery,
+        handleSearch,
+    } = useContext(NotesContext);
+
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleDeleteNote = () => {
         setOpenDialog(true);
     };
+
     const handleConfirmDelete = () => {
         onDeleteNote && onDeleteNote(activeNote);
         setOpenDialog(false);
     };
+
     const handleCancelDelete = () => {
         setOpenDialog(false);
     };
