@@ -92,7 +92,13 @@ export default function ListItem({ saveNote }) {
                             }
                             variant='outlined'
                             color='success'
-                            sx={{ width: '40vw', marginTop: '20px' }}
+                            sx={{
+                                width: '40vw',
+                                marginTop: '20px',
+                                '@media (max-width: 600px)': {
+                                    width: '40%',
+                                },
+                            }}
                         />
                     </Box>
                     <Box
@@ -120,6 +126,9 @@ export default function ListItem({ saveNote }) {
                             sx={{
                                 width: '70vw',
                                 marginTop: '20px',
+                                '@media (max-width: 600px)': {
+                                    width: '40%',
+                                },
                             }}
                         />
                     </Box>
